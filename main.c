@@ -22,11 +22,25 @@ int menuGeneral()
 }
 
 // Listado Alumnos
-void listadoAlumnos(char alumnos[][6][30], int cantidad)
+void listadoAlumnos(char alumnos[][6][30], int cantidad, int alumnosCargados)
 {
-    for (int i = 0; i < cantidad; i++)
+    if (alumnosCargados != 0)
     {
-        printf("%s | %s | %s | %s | %s | %s \n", alumnos[i][0], alumnos[i][1], alumnos[i][2], alumnos[i][3], alumnos[i][4], alumnos[i][5]);
+        printf("######################\n");
+        printf("# LISTADO DE ALUMNOS #\n");
+        printf("######################\n");
+        for (int i = 0; i < cantidad; i++)
+        {
+            printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
+            printf("%s | %s | %s | %s | %s | %s \n", alumnos[i][0], alumnos[i][1], alumnos[i][2], alumnos[i][3], alumnos[i][4], alumnos[i][5]);
+        }
+        printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n\n");
+    }
+    else
+    {
+        printf("################################\n");
+        printf("# No hay alumnos cargados aún. # \n");
+        printf("################################\n\n");
     }
 }
 // ----------------------------- Main -----------------------------
@@ -40,10 +54,11 @@ int main()
     int cantidadDeAlumnos = 0;
     // Opción de menu
     int opcionvalidada;
-    // Tipo int datos alumno
+    // Transformación de tipo int datos alumnos
     int cantidadnumerosendni;
     int dninumerico;
     int edadnumerico;
+    int mediodepagonuemrico;
     // Tipo int precio y cantidad de alumnos inscriptos de talleres
     int preciopintura;
     int precioescultura;
@@ -79,7 +94,7 @@ int main()
             // Cantidad de alumnos y validación
             printf("Cantidad de alumnos que quiere inscribir: ");
             scanf("%i", &cantidadDeAlumnos);
-            while (cantidadDeAlumnos < 1)
+            while (cantidadDeAlumnos < 1 || alumnosCargados + cantidadDeAlumnos > 100)
             {
                 printf("Dato inváido. Ingrese que cantidad de alumnos desea inscribir: ");
                 scanf("%d", &cantidadDeAlumnos);
@@ -102,6 +117,7 @@ int main()
                 while (cantidadnumerosendni < 6 || cantidadnumerosendni > 9 || dninumerico < 10000000 || dninumerico > 60000000)
                 {
                     printf("El dni es inválido, recuerda que debe ser mayor a 10 millones y menor que 60 millones.\n");
+                    printf("Dni: ");
                     scanf("%s", alumnos[i][0]);
                     // Pasarlo a int
                     dninumerico = strtol(alumnos[i][0], NULL, 10);
@@ -114,36 +130,66 @@ int main()
                 scanf("%s", alumnos[i][1]);
                 printf("Nombre: ");
                 scanf("%s", alumnos[i][2]);
+
                 // Edad y Validación
                 printf("Edad: ");
                 scanf("%s", alumnos[i][3]);
                 edadnumerico = strtol(alumnos[i][3], NULL, 10);
                 while (edadnumerico < 0 || edadnumerico > 100)
                 {
+                    printf("Edad incorrecta, intente nuevamente. \n ");
                     printf("Edad: ");
                     scanf("%s", alumnos[i][3]);
                     edadnumerico = strtol(alumnos[i][3], NULL, 10);
                 }
 
-                // CÓDIGO DE TALLER
-                printf("Código del taller: ");
+                // Código de taller y validación
+                printf("Código del taller \n");
                 printf("Recuerda que los códigos són(en mayúsculas): \n ");
                 printf("PNT para Pintura. \n ");
                 printf("ESC para Escultura. \n ");
                 printf("THR para Teatro. \n ");
                 printf("FOT para Fotografía. \n ");
+                printf("Código del taller: ");
                 scanf("%s", alumnos[i][4]);
+                while (
+                    strcmp(alumnos[i][4], "PNT") != 0 &&
+                    strcmp(alumnos[i][4], "ESC") != 0 &&
+                    strcmp(alumnos[i][4], "THR") != 0 &&
+                    strcmp(alumnos[i][4], "FOT") != 0)
+                {
+                    printf("Código no válido. Intente nuevamente. \n ");
+                    printf("PNT para Pintura. \n ");
+                    printf("ESC para Escultura. \n ");
+                    printf("THR para Teatro. \n ");
+                    printf("FOT para Fotografía. \n ");
+                    printf("Código del taller: ");
+                    scanf("%s", alumnos[i][4]);
+                }
 
                 // MEDIO DE PAGO
+                printf("Medio de pago \n");
+                printf("1 - Efectivo \n");
+                printf("2 - Crédito \n");
                 printf("Medio de pago: ");
-                printf("1 - Efectivo");
-                printf("2 - Crédito");
                 scanf("%s", alumnos[i][5]);
+                mediodepagonuemrico = strtol(alumnos[i][5], NULL, 10);
+                while (mediodepagonuemrico != 1 && mediodepagonuemrico != 2)
+                {
+                    printf("Medio de pago no válido. Intente nuevamente.\n");
+                    printf("1 - Efectivo\n");
+                    printf("2 - Crédito\n");
+                    printf("Medio de pago: ");
+                    scanf("%s", alumnos[i][5]);
+                    mediodepagonuemrico = strtol(alumnos[i][5], NULL, 10);
+                }
             }
+            // Actualización de alumnos cargados
+            alumnosCargados = alumnosCargados + cantidadDeAlumnos;
         }
         else if (opcionvalidada == 2)
         {
-            listadoAlumnos(alumnos, cantidadDeAlumnos);
+            listadoAlumnos(alumnos, alumnosCargados, alumnosCargados);
         }
     } while (opcionvalidada != 7);
     return 0;
