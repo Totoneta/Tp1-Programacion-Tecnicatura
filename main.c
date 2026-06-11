@@ -22,11 +22,11 @@ int menuGeneral()
 }
 
 // Listado Alumnos
-int listadoAlumnos(char alumnos[][6][30], int cantidad)
+void listadoAlumnos(char alumnos[][6][30], int cantidad)
 {
     for (int i = 0; i < cantidad; i++)
     {
-        printf("%s | %s | %s | %s | %s \n", alumnos[i][0], alumnos[i][1], alumnos[i][2], alumnos[i][3], alumnos[i][4]);
+        printf("%s | %s | %s | %s | %s | %s \n", alumnos[i][0], alumnos[i][1], alumnos[i][2], alumnos[i][3], alumnos[i][4], alumnos[i][5]);
     }
 }
 // ----------------------------- Main -----------------------------
@@ -34,7 +34,11 @@ int listadoAlumnos(char alumnos[][6][30], int cantidad)
 int main()
 {
     // VARIABLES Y ARRAYS
+    // Alumnos ya agregados para no sobreescribirlos
+    int alumnosCargados = 0;
+    // Agregar alumnos variable
     int cantidadDeAlumnos = 0;
+    // Opción de menu
     int opcionvalidada;
     // Tipo int datos alumno
     int cantidadnumerosendni;
@@ -82,7 +86,7 @@ int main()
             }
 
             // Pedir datos del alumno, validarlos y almacenarlos
-            for (int i = 0; i < cantidadDeAlumnos; i++)
+            for (int i = alumnosCargados; i < cantidadDeAlumnos + alumnosCargados; i++)
             {
                 printf("Ingrese los datos del alumno n° %d \n", i + 1);
 
@@ -105,14 +109,21 @@ int main()
                     cantidadnumerosendni = strlen(alumnos[i][0]);
                 }
 
-                // NOMBRE APELLIDO Y EDAD
+                // Nombre y apellido
                 printf("Apellido: ");
                 scanf("%s", alumnos[i][1]);
                 printf("Nombre: ");
                 scanf("%s", alumnos[i][2]);
+                // Edad y Validación
                 printf("Edad: ");
                 scanf("%s", alumnos[i][3]);
                 edadnumerico = strtol(alumnos[i][3], NULL, 10);
+                while (edadnumerico < 0 || edadnumerico > 100)
+                {
+                    printf("Edad: ");
+                    scanf("%s", alumnos[i][3]);
+                    edadnumerico = strtol(alumnos[i][3], NULL, 10);
+                }
 
                 // CÓDIGO DE TALLER
                 printf("Código del taller: ");
@@ -133,8 +144,6 @@ int main()
         else if (opcionvalidada == 2)
         {
             listadoAlumnos(alumnos, cantidadDeAlumnos);
-
-            break;
         }
     } while (opcionvalidada != 7);
     return 0;
