@@ -22,7 +22,7 @@ int menuGeneral()
 }
 
 // Listado Alumnos
-void listadoAlumnos(char alumnos[][6][30], int cantidad, int alumnosCargados)
+void listadoAlumnos(char alumnos[][7][30], int cantidad, int alumnosCargados)
 {
     if (alumnosCargados != 0)
     {
@@ -32,7 +32,7 @@ void listadoAlumnos(char alumnos[][6][30], int cantidad, int alumnosCargados)
         for (int i = 0; i < cantidad; i++)
         {
             printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
-            printf("%s | %s | %s | %s | %s | %s \n", alumnos[i][0], alumnos[i][1], alumnos[i][2], alumnos[i][3], alumnos[i][4], alumnos[i][5]);
+            printf("%s | %s | %s | %s | %s | %s \n", alumnos[i][0], alumnos[i][1], alumnos[i][2], alumnos[i][3], alumnos[i][4], alumnos[i][6]);
         }
         printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n\n");
     }
@@ -59,26 +59,23 @@ int main()
     int dninumerico;
     int edadnumerico;
     int mediodepagonuemrico;
-    // Tipo int precio y cantidad de alumnos inscriptos de talleres
-    int preciopintura;
-    int precioescultura;
-    int precioteatro;
-    int preciofotografia;
-    int cantidadocupadapintura;
-    int cantidadocupadaescultura;
-    int cantidadocupadateatro;
-    int cantidadocupadafotografia;
-    // Arrays
+    int adeudadonumerico = 0;
+    char adeudadonumchar[30];
     // Almacenamiento de alumnos
-    char alumnos[100][6][30];
+    char alumnos[100][7][30];
     // Talleres
-    char disciplinas[4][4][15] = {
-        {"PNT", "Pintura", "25000", "0"},
-        {"ESC", "Escultura", "14000", "0"},
-        {"THR", "Teatro", "19000", "0"},
-        {"FOT", "Fotografía", "23000", "0"},
+    char disciplinas[4][2][15] = {
+        {"PNT", "Pintura"},
+        {"ESC", "Escultura"},
+        {"THR", "Teatro"},
+        {"FOT", "Fotografía"},
     };
-
+    int disciplinasnumerico[4][2] = {
+        {25000, 0},
+        {14000, 0},
+        {19000, 0},
+        {23000, 0},
+    };
     do
     {
         // Menú y validación
@@ -103,6 +100,7 @@ int main()
             // Pedir datos del alumno, validarlos y almacenarlos
             for (int i = alumnosCargados; i < cantidadDeAlumnos + alumnosCargados; i++)
             {
+                adeudadonumerico = 0;
                 printf("Ingrese los datos del alumno n° %d \n", i + 1);
 
                 // DNI
@@ -124,7 +122,7 @@ int main()
                     // Contador del dni
                     cantidadnumerosendni = strlen(alumnos[i][0]);
                 }
-
+                
                 // Nombre y apellido
                 printf("Apellido: ");
                 scanf("%s", alumnos[i][1]);
@@ -142,6 +140,11 @@ int main()
                     scanf("%s", alumnos[i][3]);
                     edadnumerico = strtol(alumnos[i][3], NULL, 10);
                 }
+                if (edadnumerico < 5)
+                {
+                    adeudadonumerico = adeudadonumerico + 2000;
+                }
+                
 
                 // Código de taller y validación
                 printf("Código del taller \n");
@@ -156,7 +159,7 @@ int main()
                     strcmp(alumnos[i][4], "PNT") != 0 &&
                     strcmp(alumnos[i][4], "ESC") != 0 &&
                     strcmp(alumnos[i][4], "THR") != 0 &&
-                    strcmp(alumnos[i][4], "FOT") != 0)
+                    strcmp(alumnos[i][4], "FOT") != 0 )
                 {
                     printf("Código no válido. Intente nuevamente. \n ");
                     printf("PNT para Pintura. \n ");
@@ -166,7 +169,33 @@ int main()
                     printf("Código del taller: ");
                     scanf("%s", alumnos[i][4]);
                 }
-
+                
+                if ( strcmp(alumnos[i][4], "PNT") == 0)
+                {
+                    /* code */
+                }
+                // validacion de cursos y precios
+                
+                if (strcmp(alumnos[i][4], "PNT") == 0)
+                {
+                    disciplinasnumerico[0][1] = disciplinasnumerico[0][1] + 1;
+                    adeudadonumerico = adeudadonumerico + disciplinasnumerico[0][0];
+                }
+                else if (strcmp(alumnos[i][4], "ESC") == 0)
+                {
+                    disciplinasnumerico[1][1] = disciplinasnumerico[1][1] + 1;
+                    adeudadonumerico = adeudadonumerico + disciplinasnumerico[1][0];
+                }
+                else if (strcmp(alumnos[i][4], "THR") == 0)
+                {
+                    disciplinasnumerico[2][1] = disciplinasnumerico[2][1] + 1;
+                    adeudadonumerico = adeudadonumerico + disciplinasnumerico[2][0];
+                }
+                else if (strcmp(alumnos[i][4], "FOT") == 0)
+                {
+                    disciplinasnumerico[3][1] = disciplinasnumerico[3][1] + 1;
+                    adeudadonumerico = adeudadonumerico + disciplinasnumerico[3][0];
+                }
                 // MEDIO DE PAGO
                 printf("Medio de pago \n");
                 printf("1 - Efectivo \n");
@@ -183,13 +212,25 @@ int main()
                     scanf("%s", alumnos[i][5]);
                     mediodepagonuemrico = strtol(alumnos[i][5], NULL, 10);
                 }
+                if (mediodepagonuemrico == 2)
+                {
+                    adeudadonumerico = adeudadonumerico + (adeudadonumerico * 0.05);
+                }
+                sprintf(adeudadonumchar, "%d", adeudadonumerico);
+                strcpy(alumnos[i][6], adeudadonumchar);
+                
             }
+
             // Actualización de alumnos cargados
             alumnosCargados = alumnosCargados + cantidadDeAlumnos;
         }
         else if (opcionvalidada == 2)
         {
             listadoAlumnos(alumnos, alumnosCargados, alumnosCargados);
+            // for (int i = 0; i < 4; i++)
+            //  {
+            //  printf("%i", disciplinasnumerico[i][1]);
+            //  }
         }
     } while (opcionvalidada != 7);
     return 0;
