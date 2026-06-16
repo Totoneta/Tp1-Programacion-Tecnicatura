@@ -1,3 +1,10 @@
+/*
+Tomás Godoy
+Delfina Maccari
+Mateo Rapaline
+Thiago Aguirre
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -301,6 +308,7 @@ void estadisticasGestion(char alumnos[][7][30], int alumnosCargados, char discip
     if (disciplinasnumerico[3][1] > 0)
         printf("FOT: %.2f%%\n", (menoresFOT * 100.0) / disciplinasnumerico[3][1]);
 }
+
 // ----------------------------- Main -----------------------------
 
 int main()
